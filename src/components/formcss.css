@@ -1,0 +1,87 @@
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+  }
+  .container
+  {
+    background: radial-gradient(#e5e5e5,#ffff,#e5e5e5);
+    padding: 20px;
+  }
+  .card:hover{
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,253) !important;
+    transform: scale(1.05);
+  }
+  .voteon
+  {
+    font-weight: 600;
+    font-size: x-large;
+  }
+.button
+{
+  float: right;
+}
+.navitem
+  {
+    border-bottom: 3px solid transparent;
+  }
+.navitem:hover
+{
+  border-bottom: 3px solid #a9a9a9;
+}
+.navitem:active
+{
+  border-bottom: 3px solid #a9a9a9;
+}
+  body
+  {
+    background: radial-gradient(#e5e5e5,#ffff,#e5e5e5);
+  }
+  /* Style the submit button */
+  input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  /* Style the container for inputs */
+ 
+  
+  /* The message box is shown when the user clicks on the password field */
+  #message {
+    background: #f1f1f1;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  #message p {
+    padding: 10px 35px;
+    font-size: 18px;
+  }
+  
+  /* Add a green text color and a checkmark when the requirements are right */
+  .valid {
+    color: green;
+  }
+  
+  .valid:before {
+    position: relative;
+    left: -35px;
+    content: "✔";
+  }
+  
+  /* Add a red text color and an "x" when the requirements are wrong */
+  .invalid {
+    color: red;
+  }
+  
+  .invalid:before {
+    position: relative;
+    left: -35px;
+    content: "✖";
+  }
