@@ -4,6 +4,6 @@
 
 2)Inside server folder type command -> npm install  (this will install all dependencies in your system)
 
-3) now to run server type command -> node index.js
+3)Now to run server type command -> node index.js
 
-4) You can also install nodemon
+4)You can also install nodemon
