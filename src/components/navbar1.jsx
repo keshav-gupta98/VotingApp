@@ -44,8 +44,8 @@ class NavBar1 extends Component
       <Nav>
           <Nav.Item className = "navitem"><Nav.Link href="/"><FontAwesomeIcon icon={faHome} /> HOME</Nav.Link></Nav.Item>
           <Nav.Item className = "navitem"><Nav.Link href="/candidate">CANDIDATES</Nav.Link></Nav.Item>
-          <Nav.Item className = "navitem"><Nav.Link href="/vote">VOTE</Nav.Link></Nav.Item>
-          <Nav.Item className = "navitem"><Nav.Link href="/result"><FontAwesomeIcon icon={faPoll} /> RESULT</Nav.Link></Nav.Item>
+          <Nav.Item className = "navitem"><Nav.Link href="/pagenotfound">VOTE</Nav.Link></Nav.Item>
+          <Nav.Item className = "navitem"><Nav.Link href="/pagenotfound"><FontAwesomeIcon icon={faPoll} /> RESULT</Nav.Link></Nav.Item>
       </Nav>
       <Nav className="ml-auto">
           <Nav.Item className = "navitem"><Nav.Link href="/profile"><FontAwesomeIcon icon={faUser} /> PROFILE</Nav.Link></Nav.Item>
