@@ -14,7 +14,7 @@
 
 2)now insert the following in .env file 
 
-1. SECRET_KEY = <Your Secret Key>
-2. PORT = <The Port On which You want to run server>
-3. AdminEmail = <Your EmailID for Admin>
-4. adminPass = <Password for Admin Email>
+1. SECRET_KEY = Your Secret Key
+2. PORT = The Port On which You want to run server
+3. AdminEmail = Your EmailID for Admin
+4. adminPass = Password for Admin Email
