@@ -7,3 +7,14 @@
 3)Now to run server type command -> node index.js
 
 4)You can also install nodemon
+
+# HOW TO MAKE .env
+
+1)Create a file named .env
+
+2)now insert the following in .env file 
+
+1. SECRET_KEY = <Your Secret Key>
+2. PORT = <The Port On which You want to run server>
+3. AdminEmail = <Your EmailID for Admin>
+4. adminPass = <Password for Admin Email>
