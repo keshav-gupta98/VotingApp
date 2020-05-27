@@ -163,6 +163,7 @@ app.post('/userAvailable',function(req,res)
                         length:6,
                         charset:'123456789'
                     })
+                    console.log(token);
                     mailSender(req.body.user.email,'Account verification mail','Your OTP is :'+token);
                     var x = new OTP;
                     x.email = req.body.user.email;
