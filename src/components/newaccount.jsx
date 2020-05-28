@@ -14,28 +14,8 @@ class NewAccount extends Component
         this.capital = React.createRef();
         this.number = React.createRef();
         this.length = React.createRef();
-        
-        // axios.get(`http://localhost:8000/getStates`).then((res)=>
-        // {
-        //     this.setState({states:res.data});
-        // })
-        // var q = "Andhra Pradesh";
-        // axios.get('http://localhost:8000/getDistricts',{params:{
-        //     id:q
-        // }}).then(res=>{
-        //     this.setState({districts:res.data});
-        //     }
-        // )
     }
-    // stateSelected = (event)=>
-    // {
-    //     var a = event.target.state.value;
-    //     a = "Andhra Pradesh";
-    //     axios.get(`http://localhost:8000/getDistrict`,{state:a}).then(res=>{
-    //         this.setState({districts:res.data});
-    //         }
-    //     )
-    // }
+    
     passwordCheck = (event)=>{
         let myInput = event.target.value;
                     var lowerCaseLetters = /[a-z]/g;
