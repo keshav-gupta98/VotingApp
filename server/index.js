@@ -232,25 +232,54 @@ app.post('/changePassword',JWTValidator,function(req,res)
 
 app.post('/castVote',JWTValidator,function(req,res)                                // to cast vote
 {
-    User.findOne({email:req.email}).then((u)=>
+    OTP.find({}).then((otp)=>
     {
-        if(u.voted === "No")
+        if(otp.length === 0)
+        res.send("Session Expired");
+        else
         {
-            User.findOneAndUpdate({email:req.email},{$set:{voted:"Yes"}}).then((U)=>
+            OTP.findOne({email:req.email,otp:req.body.otp},function(err,o)
             {
-                console.log(U);
+                if(!o)
+                res.send('Invalid Otp');
+                else
+                {
+                    User.findOneAndUpdate({email:req.email},{$set:{voted:"Yes"}}).then((U)=>
+                    {
+                        console.log(U);
+                    })
+                    Candidate.findById({_id:req.body.id},function(err,c)
+                    {
+                        var x = c.votes;
+                        x = x+1;
+                        Candidate.findByIdAndUpdate({_id:req.body.id},{$set:{votes:x}})
+                    })
+                    res.send("OK");
+                }
             })
-             Candidate.findById({_id:req.body.data.id}).then((c)=>
-             {
-                 var x = c.votes+1;
-                 Candidate.findByIdAndUpdate({_id:req.body.data.id},{$set:{votes:x}})
-             })
         }
-        else res.send("Already Voted");
     })
 })
 
-
+app.get('/sendMail',JWTValidator,function(req,res)
+{
+    const token = randomstring.generate({
+        length:6,
+        charset:'123456789'
+    })
+    console.log(token);
+    mailSender(req.email,'Account verification mail','Your OTP for Voting is :'+token);
+    var x = new OTP;
+    x.email = req.email;
+    x.otp = token;
+    x.save(function(err)
+    {
+        if(err)
+        res.json('error');
+        else
+        res.json('OK');
+    })
+})
 //check whether user can vote or not
 app.get('/vote',JWTValidator,function(req,res)
 {

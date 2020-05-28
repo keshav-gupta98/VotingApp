@@ -15,6 +15,7 @@ import Candidate from './candidate';
 import Result from './result';
 import Vote from './vote';
 import OTP from './otp';
+import VoteOtp from './voteotp'
 class MainPage extends Component
 {
     constructor()
@@ -43,6 +44,7 @@ class MainPage extends Component
                         <Route exact path="/candidate" render={(props)=><Candidate/>}></Route>
                         <Route exact path="/result" render={(props)=><Result/>}></Route>
                         <Route exact path="/otp" render={(props)=><OTP/>}></Route>
+                        <Route exact path="/VoteOtp" render={(props)=><VoteOtp{...props}/>}></Route>
                         <Route exact path="/vote" render={(props)=><Vote/>}></Route>
                         <Route exact path="/admin" render={(props)=><Admin nature={this.nature}/>}></Route>
                         <Route exact path='/adminHome' render={(props)=><AdminHome/>}></Route>

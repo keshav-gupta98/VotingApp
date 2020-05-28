@@ -13,7 +13,7 @@ class Vote extends Component
     constructor()
     {
         super();
-        this.state = {loading:false,list:[{}],vote:false,modal:false,info:'',declared:false,confirm:false,id:''};
+        this.state = {id:'',loading:false,list:[{}],vote:false,modal:false,info:'',declared:false,confirm:false,id:'',red:false};
     }
     componentDidMount()
     {
@@ -49,17 +49,14 @@ class Vote extends Component
     }
     castVote = (id) =>
     {
-        alert("Thank You for Voting");
-        const y = {id:id};
-        axios.post(`http://localhost:8000/castVote`,{data:y},{
+        axios.get(`http://localhost:8000/sendMail`,{
             headers :{
-                'authorization' : localStorage.token
-            }
+                         'authorization' : localStorage.token
+                     }
         }).then(res=>
             {
-                console.log(res.data);
+                this.setState({id:id,red:true});
             })
-        this.setState({vote:true});
     }
     modalHandle = (a,b,c,d) =>
     {
@@ -83,6 +80,13 @@ class Vote extends Component
         if(localStorage.getItem('token') === null)
         {
             return <Redirect to="/login"></Redirect>
+        }
+        else if(this.state.red === true)
+        {
+            return ( <Redirect to={{
+                pathname:'/VoteOtp',
+                state:{id:this.state.id}
+            }}/> )
         }
         else if(this.state.loading === false)
         {
