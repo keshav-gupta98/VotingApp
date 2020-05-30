@@ -6,7 +6,7 @@ class OTP extends Component
     constructor(props)
     {
         super(props);
-        this.state = {res:false,email:this.props.location.state.email,user:this.props.location.state};
+        this.state = {res:false,email:this.props.location.state.email,user:this.props.location.state,red:false};
     }
     validate = (event) =>
     {
@@ -18,7 +18,12 @@ class OTP extends Component
             email:this.state.email
         }).then(res=>
             {
-                if(res.data === "No")
+                if(res.data === "Session Expired")
+                {
+                    alert("Session Expired");
+                    this.setState({red:true});
+                }
+                else if(res.data === "No")
                 {
                     alert("Invalid OTP");
                 }
@@ -37,13 +42,16 @@ class OTP extends Component
     }
     render()
     {
-        if(this.state.res === true)
+        if(this.state.red === true)
+        return <Redirect to='/newaccount'/>
+        else if(this.state.res === true)
         return <Redirect to='/login'></Redirect>
         else
         return (
             <div className="container mt-4" style={{backgroundColor:"white"}}>
           <div className="offset-md-3 offset-lg-3 offset-sm-2 col-md-6 col-lg-6 col-sm-5">
-            <h2> Enter OTP  sent to your email</h2>
+            <h4> Enter OTP sent to email linked with voterID {this.state.user.VoterID}</h4>
+            <h6>(This OTP is valid for 60 seconds)</h6>
           </div>
           <form>
           <div className="row form-group">

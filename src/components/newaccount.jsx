@@ -75,64 +75,42 @@ class NewAccount extends Component
     onsubmitHandeler = (event)=>
     {
         event.preventDefault();
-        var regName =  /^[a-zA-Z]+$/; 
-        if(!regName.test(document.getElementById('firstname').value))
+        if(this.passwordChange()===false)
         {
-            alert('Invalid FirstName')
+            alert("Please enter correct value");
         }
         else
         {
-            if(!regName.test(document.getElementById('lastname').value))
+            if(event.target.Confirm.value!==event.target.password.value)
             {
-                alert('Invalid LastName');
+                alert('Please confirm password correctly');
             }
             else
             {
-                if(this.passwordChange()===false)
+                this.VoterID=event.target.VoterID.value;
+                this.password=event.target.password.value;
+                this.setState({ VoterID:this.VoterID,password:this.password,submitted:true});
+                if(this.state.submitted)
                 {
-                    alert("Please enter correct value");
-                }
-                else
-                {
-                    if(event.target.Confirm.value!==event.target.password.value)
+                    axios.post('http://localhost:8000/checkList',{id:this.state.VoterID}).then(res=>
                     {
-                        alert('Please confirm password correctly');
-                    }
-                    else
-                    {
-                        this.firstname=event.target.firstname.value;
-                        this.lastname=event.target.lastname.value;
-                        this.email=event.target.email.value;
-                        this.VoterID=event.target.VoterID.value;
-                        this.password=event.target.password.value;
-                        this.setState({firstname:this.firstname,
-                                        lastname:this.lastname,
-                                        email:this.email,
-                                        VoterID:this.VoterID,
-                                        password:this.password,
-                                        submitted:true});
-                                        if(this.state.submitted)
-        {
-            axios.post('http://localhost:8000/checkList',{id:this.state.VoterID}).then(res=>
-            {
-                if(res.data === "error")
-                console.log("error");
-                else if(res.data === "Voter ID is Invalid")
-                alert(res.data);
-                else{
-                    this.setState({state:res.data.state,district:res.data.district});
-                     axios.post('http://localhost:8000/userAvailable',{
-                         user:this.state
-                     }).then(res=>{
-                         if(res.data === "error")
-                        alert("This User Already Exists");
-                         if(res.data === "OK")
-                         this.setState({res:true});
-                     })       
-                }
-            })
-        }
-                    }
+                        if(res.data === "error")
+                        console.log("error");
+                        else if(res.data === "Voter ID is Invalid")
+                        alert(res.data);
+                        else
+                        {
+                            this.setState({email:res.data.email,firstname:res.data.firstname,lastname:res.data.lastname,state:res.data.state,district:res.data.district});
+                            axios.post('http://localhost:8000/userAvailable',{
+                                user:this.state
+                            }).then(res=>{
+                                if(res.data === "error")
+                                alert("This User Already Exists");
+                                if(res.data === "OK")
+                                this.setState({res:true});
+                            })       
+                        }
+                    })
                 }
             }
         }
@@ -153,20 +131,8 @@ class NewAccount extends Component
             </div>
             <form onSubmit={this.onsubmitHandeler}>
             <div className="offset-md-3 offset-lg-3 offset-sm-2 col-md-6 col-lg-6 col-sm-5">
-                < label htmlFor="firstname">FirstName</label>
-                <input type="name" className="form-control" id="firstname" placeholder="FirstName"  required></input>
-            </div>
-            <div className="offset-md-3 offset-lg-3 offset-sm-2 col-md-6 col-lg-6 col-sm-5">
-                < label htmlFor="lastname">LastName</label>
-                <input type="name" className="form-control" id="lastname" placeholder="LastName"  required></input>
-            </div>
-            <div className="offset-md-3 offset-lg-3 offset-sm-2 col-md-6 col-lg-6 col-sm-5">
                 <label htmlFor="VoterID">Voter ID</label>
                 <input type="text" className="form-control" id="VoterID" placeholder="VoterID" aria-describedby="inputGroupPrepend2" required></input>
-            </div>
-            <div className="offset-md-3 offset-lg-3 offset-sm-2 col-md-6 col-lg-6 col-sm-5">
-                <label htmlFor="email">Email ID</label>
-                <input type="email" className="form-control" id="email" placeholder="e.g.abc@gmail.com" aria-describedby="inputGroupPrepend2" required></input>
             </div>
             <div className="offset-md-3 offset-lg-3 offset-sm-2 col-md-6 cooffset-md-3 offset-lg-3 offset-sm-2 col-md-6 col-lg-6 col-sm-5-5">
                 <label htmlFor="password">Password</label>

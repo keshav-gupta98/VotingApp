@@ -187,18 +187,26 @@ app.post('/userAvailable',function(req,res)
 
 app.post('/validate',function(req,res)
 {
-    OTP.findOne({email:req.body.email,otp:req.body.otp},function(err,user)
+    OTP.findOne({email:req.body.email},function(err,o)
     {
-        if(err)
-        console.log(err)
-        else if(!user)
-        res.json("No");
-        else {
-            OTP.findOneAndDelete({email:req.body.email},function(err,otp)
+        if(!o)
+        res.send('Session Expired');
+        else
+        {
+            OTP.findOne({email:req.body.email,otp:req.body.otp},function(err,user)
             {
-                console.log(otp);
-            });
-            res.json("Yes");
+                if(err)
+                console.log(err)
+                else if(!user)
+                res.json("No");
+                else {
+                    OTP.findOneAndDelete({email:req.body.email},function(err,otp)
+                    {
+                        console.log(otp);
+                    });
+                    res.json("Yes");
+                }
+            })
         }
     })
 })
@@ -268,7 +276,7 @@ app.get('/sendMail',JWTValidator,function(req,res)
         charset:'123456789'
     })
     console.log(token);
-    mailSender(req.email,'Account verification mail','Your OTP for Voting is :'+token);
+    mailSender(req.email,'OTP to vote','Your OTP for Voting is :'+token);
     var x = new OTP;
     x.email = req.email;
     x.otp = token;

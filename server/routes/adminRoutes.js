@@ -46,6 +46,9 @@ router.post('/addVoter',function(req,res)                                       
     v.VoterID = req.body.VoterID;
     v.state = req.body.state;
     v.district = req.body.district;
+    v.email= req.body.email;
+    v.firstname=req.body.firstname;
+    v.lastname=req.body.lastname;
     v.save(function(err)
     {
         if(err)
@@ -69,6 +72,13 @@ router.delete('/otp',function(req,res)
     OTP.findByIdAndDelete({_id:req.body.id}).then((o)=>
     {
         res.send(o);
+    })
+})
+router.delete('/voterID',function(req,res)
+{
+    Voter.findOneAndDelete({VoterID:req.body.id}).then((v)=>
+    {
+        res.send(v);
     })
 })
 router.get('/voterID',function(req,res)                                // get all voterID
