@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const Admin = require('../models/admin.js');
-const ListOfCandidates = require('../models/ListOfCandidates');
+
 const Area = require('../models/area')
 const Voter = require('../models/voters');
 const Candidate = require('../models/candidate');

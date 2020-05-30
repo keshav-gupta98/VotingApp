@@ -1,15 +1,14 @@
 import React,{Component} from 'react';
 import {Redirect} from 'react-router';
+import {Pie} from 'react-chartjs-2';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
 class Result extends Component
 {
     constructor()
     {
         super();
-        this.state = {loading:false,list:[{}]};
+        this.state = {datasets:[{}],loading:false,label:[],list:[{}]};
     }
     componentDidMount()
     {
@@ -22,7 +21,20 @@ class Result extends Component
                 if(res.data === "Result Not Declared")
                 this.setState({loading:true,result:false});
                 else
-                this.setState({loading:true,result:true,list:res.data});
+                {
+                    var label = [];
+                    var color = [];
+                    for(var i = 0;i<res.data.length;i++)
+                    label[i] = res.data[i].firstname + " " + res.data[i].lastname + " (" + res.data[i].party + ")"
+                    var votes = []
+                    for(var i = 0;i<res.data.length ; i++)
+                    {
+                        color[i] = '#' + Math.random().toString(16).substr(-6);
+                        votes[i] = res.data[i].votes;
+                    }
+                    var datasets = [{data:votes,backgroundColor:color}];
+                    this.setState({loading:true,result:true,list:res.data,label:label,datasets:datasets});
+                }
             })
     }
     render()
@@ -52,25 +64,9 @@ class Result extends Component
         else
         {
             return (
-                <div className="container"  style={{marginTop:'20px'}}>
-                <div className="col">{this.state.list.map((item)=>{
-                return <div key={item._id} className="col-md-12 col-lg-12 col-sm-12" style={{marginTop:'20px'}}>
-                        <div className="card">
-                        <div className = "row">
-                            <div className = "col-md-2">
-                            <FontAwesomeIcon icon={faUser} size="10x" style={{color:'#EE82EE'}}/>
-                            </div>
-                            <div className = "col-md-9">
-                                <h3>{item.firstname} {item.lastname}</h3>
-                                <h2 style={{color:'#A0522D'}}>{item.party}</h2>
-                                <h4 style={{color:'#A9A9A9'}}>VOTES: {item.votes}</h4>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    })}
+                <div>
+                    <Pie data={{labels:this.state.label,datasets:this.state.datasets}} height='90%'/>
                 </div>
-            </div>
             )
         }
     }
