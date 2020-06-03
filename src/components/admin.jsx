@@ -34,7 +34,7 @@ class Login extends Component
                             {
                                 this.setState({loggedin:true});
                                 setTimeout(()=>{
-                                    localStorage.setItem('login',"true");
+                                    localStorage.setItem('admin',"true");
                                     localStorage.setItem('token',res.data.token);
                                     this.props.nature("true")
                                 })

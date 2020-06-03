@@ -15,7 +15,7 @@ const OTP = require('../models/OTP');
 
 
 
-router.get('/getAdmin',function(req,res)                                        // get all admin
+router.get('/admin',function(req,res)                                        // get all admin
 {
     Admin.find({}).then(function(u){
         res.send(u);
@@ -30,17 +30,36 @@ router.get('/user',function(req,res)                                           /
     })
 })
 
-
-router.delete('/user',function(req,res)                                        // delete any user
+router.post('/user',function(req,res)
 {
-    User.findByIdAndDelete({_id:req.body.id}).then(function(u){
+    User.find({state:req.body.state,district:req.body.district}).then((u)=>
+    {
+        if(u.length > 0)
+        {
+            var d = [];
+            u.map((item)=>
+            {
+                var temp = {_id:item._id,email:item.email,VoterID:item.VoterID};
+                d.push(temp);
+            })
+            res.send(d);
+        }
+        else
+        res.send('NoUser');
+    })
+})
+router.post('/deleteuser',function(req,res)                                        // delete any user
+{
+    //console.log(req.body.data.id);
+    User.findByIdAndDelete({_id:req.body.data.id}).then((u)=>
+    {
         console.log(u);
         res.send(u);
     })
 })
 
 
-router.post('/addVoter',function(req,res)                                       // add new voter ID
+router.post('/AddVoter',function(req,res)                                       // add new voter ID
 {
     var v = new Voter;
     v.VoterID = req.body.VoterID;
@@ -49,16 +68,50 @@ router.post('/addVoter',function(req,res)                                       
     v.email= req.body.email;
     v.firstname=req.body.firstname;
     v.lastname=req.body.lastname;
+    console.log(v);
     v.save(function(err)
     {
         if(err)
-        res.send(err);
+        {
+            console.log(err)
+            res.send('error')
+        }
+        else
+        res.send('OK');
+    })
+})
+
+
+router.post('/voter',function(req,res)                                // get all voterID
+{
+    Voter.find({state:req.body.state,district:req.body.district}).then((v)=>
+    {
+        if(v.length>0)
+        {
+            var d = [];
+            v.map((item)=>
+            {
+                var temp = {_id:item._id,VoterID:item.VoterID,email:item.email};
+                d.push(temp);
+            })
+            res.send(d);
+        }
         else
         {
-            res.send(v);
+            res.send("NoVoter")
         }
     })
 })
+
+router.post('/deleteVoter',function(req,res)
+{
+    Voter.findByIdAndDelete({_id:req.body.data.id}).then((v)=>
+    {
+        User.findOneAndDelete({email:v.email})
+        res.send(v);
+    })
+})
+
 
 router.get('/otp',function(req,res)
 {
@@ -67,6 +120,8 @@ router.get('/otp',function(req,res)
         res.send(o);
     })
 })
+
+
 router.delete('/otp',function(req,res)
 {
     OTP.findByIdAndDelete({_id:req.body.id}).then((o)=>
@@ -74,23 +129,9 @@ router.delete('/otp',function(req,res)
         res.send(o);
     })
 })
-router.delete('/voterID',function(req,res)
-{
-    Voter.findOneAndDelete({VoterID:req.body.id}).then((v)=>
-    {
-        res.send(v);
-    })
-})
-router.get('/voterID',function(req,res)                                // get all voterID
-{
-    Voter.find({}).then((v)=>
-    {
-        res.send(v);
-    })
-})
 
 
-router.get('/declareResult',function(req,res)
+router.post('/declareResult',function(req,res)
 {
     var r = new Result;
     r.state = req.body.state;
@@ -107,25 +148,39 @@ router.get('/declareResult',function(req,res)
         }
     })
 })
-router.get('/g',function(req,res)
+
+router.post('/refresh',function(req,res)
+{
+    Result.findOneAndDelete({state:req.body.state,district:req.body.district}).then((r)=>
+    {
+        Candidate.updateMany({district:req.body.district},{votes:0},function(err,docs){
+            if(err)
+            console.log(err);
+            else
+            console.log(docs);
+        })
+        User.updateMany({state:req.body.state,district:req.body.district},{voted:"No"},function(err,docs){
+            if(err)
+            console.log(err);
+            else
+            console.log(docs);
+        })
+    })
+})
+router.get('/result',function(req,res)
 {
     Result.find({}).then((r)=>
     {
         res.send(r);
     })
 })
-router.delete('/d',function(req,res)
+
+
+router.delete('/result',function(req,res)
 {
     Result.findByIdAndDelete({_id:req.body.id}).then((r)=>
     {
         res.send(r);
-    })
-})
-router.delete('/voterID',function(req,res)
-{
-    Voter.findByIdAndDelete({_id:req.body.id}).then((v)=>
-    {
-        res.send(v);
     })
 })
 
@@ -133,7 +188,12 @@ router.delete('/voterID',function(req,res)
 router.get('/getStates',function(req,res)                              // get all states
 {
     Area.find({}).then(function(u){
-        res.send(u);
+        var d  = []
+        u.map(function(item) {
+            var temp = item.state
+            d.push(temp)
+        })
+        res.send(d);
     })
 })
 
@@ -144,7 +204,7 @@ router.post('/getDistricts',function(req,res)                          // get al
     Area.findOne({state:a}).then((u)=>
     {
         //console.log(u.districts);
-        res.send(u);
+        res.send(u.districts);
     })
 })
 
@@ -169,7 +229,7 @@ router.post('/addState',function(req,res)                              // add st
 })
 
 
-router.post('/addCandidate',function(req,res)                      // add new candidate
+router.post('/AddCandidate',function(req,res)                      // add new candidate
 {
     var c = new Candidate;
     c.firstname = req.body.firstname;
@@ -192,7 +252,9 @@ router.post('/addCandidate',function(req,res)                      // add new ca
         }
     })
 })
-router.get('/c',function(req,res)
+
+
+router.get('/candidate',function(req,res)
 {
     Candidate.find({}).then((u)=>
     {
@@ -200,9 +262,27 @@ router.get('/c',function(req,res)
     })
 })
 
-router.delete('/deleteCandidate',function(req,res)                     // delete a candidate
+router.post('/candidate',function(req,res)
 {
-    Candidate.findByIdAndDelete({_id:req.body.id}).then((c)=>
+    Candidate.find({state:req.body.state,district:req.body.district}).then((c)=>
+    {
+        if(c.length>0)
+        {
+            var d = []
+            c.map((item)=>
+            {
+                var temp = {_id:item.id,firstname:item.firstname,lastname:item.lastname,party:item.party}
+                d.push(temp);
+            })
+            res.send(d);
+        }
+        else 
+        res.send('NoCandidate')
+    })
+})
+router.post('/deleteCandidate',function(req,res)                     // delete a candidate
+{
+    Candidate.findByIdAndDelete({_id:req.body.data.id}).then((c)=>
     {
         res.send(c);
     })

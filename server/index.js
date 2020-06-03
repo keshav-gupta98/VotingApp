@@ -24,6 +24,7 @@ app.use(cors());
 app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.json());
 const SECRET_KEY = process.env.SECRET_KEY;
+const ADMIN_KEY = process.env.ADMIN_KEY;
 mongoose.connect('mongodb://localhost/test',{useNewUrlParser:true,useFindAndModify: false,useUnifiedTopology:true,useNewUrlParser:true}).then(()=>{
     console.log("DataBase connected");
 })
@@ -57,8 +58,22 @@ JWTValidator = (req,res,next)=>{
         }
     })
 }
-
-app.use('/admin',AdminRoutes);
+AdminValidator = (req,res,next)=>
+{
+    const token = req.headers.authorization;
+    jwt.verify(token,ADMIN_KEY,(err,data)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        else if(data)
+        {
+            req.email = data;
+            next();
+        }
+    })
+}
+app.use('/admin',AdminValidator,AdminRoutes);
 // get info of a voter while creating new user
 app.post('/checkList',function(req,res)                          
 {
@@ -137,7 +152,7 @@ app.post('/adminLogin',function(req,res){                                       
         res.json("noUser");
         else
         {
-            jwt.sign(req.body.mail,SECRET_KEY,(err,token)=>
+            jwt.sign(req.body.mail,ADMIN_KEY,(err,token)=>
             {
                 if(err)
                 res.send(err);

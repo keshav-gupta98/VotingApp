@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import {BrowserRouter,Route, Switch} from 'react-router-dom';
-//import './externalcss.css';
 import Login from './login.jsx';
 import NavBar from './navbar.jsx';
 import NavBar1 from './navbar1.jsx';
@@ -29,7 +28,24 @@ class MainPage extends Component
     }
     render()
     {
-        if(localStorage.getItem('login') === "true")
+        if(localStorage.getItem('admin') === 'true')
+        {
+            return (
+                <BrowserRouter>
+                    <div className="fixed">
+                        <NavBar/>
+                        <LogOutButton/>
+                    </div>
+                    <Switch>
+                        <Route exact path="/login" render={(props)=><Login nature={this.nature}/>}></Route>
+                        <Route exact path="/admin" render={(props)=><Admin nature={this.nature}/>}></Route>
+                        <Route exact path="/adminHome" render={(props)=><AdminHome/>}></Route>
+                        <Route render={()=><PageNotFound/>}></Route>
+                    </Switch>
+                </BrowserRouter>
+            )
+        }
+        else if(localStorage.getItem('login') === "true")
             return (
                 <BrowserRouter>
                     <div className="fixed">
@@ -47,7 +63,6 @@ class MainPage extends Component
                         <Route exact path="/VoteOtp" render={(props)=><VoteOtp{...props}/>}></Route>
                         <Route exact path="/vote" render={(props)=><Vote/>}></Route>
                         <Route exact path="/admin" render={(props)=><Admin nature={this.nature}/>}></Route>
-                        <Route exact path='/adminHome' render={(props)=><AdminHome/>}></Route>
                         <Route render={()=><PageNotFound/>}></Route>
                     </Switch>
                 </BrowserRouter>
@@ -64,10 +79,7 @@ class MainPage extends Component
                         <Route exact path="/newaccount" render={(props)=><NewAccount />}></Route>
                         <Route exact path="/candidate" render={(props)=><Candidate/>}></Route>
                         <Route exact path="/result" render={(props)=><Result/>}></Route>
-                        <Route exact path="/vote" render={(props)=><Vote/>}></Route>
-                        <Route exact path="/otp" render={(props)=><OTP{...props}/>}></Route>
                         <Route exact path="/admin" render={(props)=><Admin nature={this.nature}/>}></Route>
-                        <Route exact path='/adminHome' render={(props)=><AdminHome/>}></Route>
                         <Route render={()=><PageNotFound/>}></Route>
                     </Switch>
                 </BrowserRouter>
