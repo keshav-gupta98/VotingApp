@@ -273,9 +273,14 @@ app.post('/castVote',JWTValidator,function(req,res)                             
                     })
                     Candidate.findById({_id:req.body.id},function(err,c)
                     {
+                        console.log(c);
                         var x = c.votes;
                         x = x+1;
-                        Candidate.findByIdAndUpdate({_id:req.body.id},{$set:{votes:x}})
+                        console.log(req.body.id);
+                        Candidate.findByIdAndUpdate({_id:req.body.id},{$set:{votes:x}}).then((c)=>
+                        {
+                            console.log(c);
+                        })
                     })
                     res.send("OK");
                 }

@@ -5,41 +5,31 @@ import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router';
 class Login extends Component
 {
-  constructor()
-  {
-    super();
-    this.state = {
-      mail:"",
-      pass:"",
-      loggedin:false,
+    constructor()
+    {
+        super();
+        this.state = {mail:"",pass:"",loggedin:false}
     }
-  }
-  submitHandler= (event) =>
-  {
-    
-    event.preventDefault();
-    console.log(this.state); 
-        axios.post('http://localhost:8000/login',{
-                        mail:event.target.email.value,
-                        pass:event.target.password.value
-                        })
-                        .then(res=>{
-                            if(res.data === "error")
-                                console.log(res.data);
-                            else if(res.data === "noUser")
-                            {                                    
-                                alert("Invalid Username Or Password")
-                            }
-                            else
-                            {
-                                this.setState({loggedin:true});
-                                setTimeout(()=>{
-                                    localStorage.setItem('login',"true");
-                                    localStorage.setItem('token',res.data.token);
-                                    this.props.nature("true")
-                                })
-                            }
-                        })
+    submitHandler= (event) =>
+    {
+        event.preventDefault(); 
+        axios.post('http://localhost:8000/login',{mail:event.target.email.value,pass:event.target.password.value}).then(res=>{
+            if(res.data === "error")
+            console.log(res.data);
+            else if(res.data === "noUser")
+            {                                    
+                alert("Invalid Username Or Password")
+            }
+            else
+            {
+                this.setState({loggedin:true});
+                setTimeout(()=>{
+                    localStorage.setItem('login',"true");
+                    localStorage.setItem('token',res.data.token);
+                    this.props.nature("true")
+                    })
+            }
+        })
     }
   render()
   {

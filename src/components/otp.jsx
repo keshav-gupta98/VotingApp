@@ -6,16 +6,15 @@ class OTP extends Component
     constructor(props)
     {
         super(props);
-        this.state = {res:false,email:this.props.location.state.email,user:this.props.location.state,red:false};
+        this.state = {res:false,user:this.props.location.state,red:false};
     }
     validate = (event) =>
     {
         event.preventDefault();
         var x = this.refs.otp.value;
-        console.log(x);
         axios.post('http://localhost:8000/validate',{
             otp:x,
-            email:this.state.email
+            email:this.state.user.email
         }).then(res=>
             {
                 if(res.data === "Session Expired")

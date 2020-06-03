@@ -101,14 +101,16 @@ class NewAccount extends Component
                         else
                         {
                             this.setState({email:res.data.email,firstname:res.data.firstname,lastname:res.data.lastname,state:res.data.state,district:res.data.district});
-                            axios.post('http://localhost:8000/userAvailable',{
+                            setTimeout(()=>{
+                                axios.post('http://localhost:8000/userAvailable',{
                                 user:this.state
                             }).then(res=>{
                                 if(res.data === "error")
                                 alert("This User Already Exists");
                                 if(res.data === "OK")
                                 this.setState({res:true});
-                            })       
+                            })
+                            },2000)       
                         }
                     })
                 }

@@ -59,7 +59,6 @@ class MainPage extends Component
                         <Route exact path="/profile" render={(props)=><Profile/>}></Route>
                         <Route exact path="/candidate" render={(props)=><Candidate/>}></Route>
                         <Route exact path="/result" render={(props)=><Result/>}></Route>
-                        <Route exact path="/otp" render={(props)=><OTP/>}></Route>
                         <Route exact path="/VoteOtp" render={(props)=><VoteOtp{...props}/>}></Route>
                         <Route exact path="/vote" render={(props)=><Vote/>}></Route>
                         <Route exact path="/admin" render={(props)=><Admin nature={this.nature}/>}></Route>
@@ -77,8 +76,7 @@ class MainPage extends Component
                         <Route exact path='/'render={(props)=><Home/>}></Route>
                         <Route exact path="/login" render={(props)=><Login nature={this.nature}/>}></Route>
                         <Route exact path="/newaccount" render={(props)=><NewAccount />}></Route>
-                        <Route exact path="/candidate" render={(props)=><Candidate/>}></Route>
-                        <Route exact path="/result" render={(props)=><Result/>}></Route>
+                        <Route exact path="/otp" render={(props)=><OTP{...props}/>}></Route>
                         <Route exact path="/admin" render={(props)=><Admin nature={this.nature}/>}></Route>
                         <Route render={()=><PageNotFound/>}></Route>
                     </Switch>
