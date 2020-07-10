@@ -18,3 +18,4 @@
 2. PORT = The Port On which You want to run server
 3. AdminEmail = Your EmailID for Admin
 4. adminPass = Password for Admin Email
+5. MONGO_ATLAS_URL = URL from MongoDB ATLAS
