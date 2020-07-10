@@ -18,7 +18,6 @@ class Login extends Component
   {
     
     event.preventDefault();
-    console.log(this.state); 
         axios.post('http://localhost:8000/adminLogin',{
                         mail:event.target.email.value,
                         pass:event.target.password.value
@@ -67,9 +66,6 @@ class Login extends Component
           <div className="offset-md-3 offset-sm-1 offset-lg-3 col-md-2 col-lg-2 col-sm-1">
               <button className="btn btn-outline-dark btn-light" type="submit">Login</button>
           </div>
-          </div>
-          <div className="offset-md-2 offset-sm-1 offset-lg-2 col-md-2 col-lg-2 col-sm-1">
-              <Link to='/newaccount'>Create new Account</Link>
           </div>
           </form>
       </div>

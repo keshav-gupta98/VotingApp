@@ -102,7 +102,13 @@ router.post('/voter',function(req,res)                                // get all
         }
     })
 })
-
+router.get('/voter',function(req,res)
+{
+    Voter.find({}).then((v)=>
+    {
+        res.send(v);
+    })
+})
 router.post('/deleteVoter',function(req,res)
 {
     Voter.findByIdAndDelete({_id:req.body.data.id}).then((v)=>

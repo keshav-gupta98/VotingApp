@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.json());
 const SECRET_KEY = process.env.SECRET_KEY;
 const ADMIN_KEY = process.env.ADMIN_KEY;
-mongoose.connect('mongodb://localhost/test',{useNewUrlParser:true,useFindAndModify: false,useUnifiedTopology:true,useNewUrlParser:true}).then(()=>{
+mongoose.connect(process.env.MONGO_ATLAS_URL,{useNewUrlParser:true,useFindAndModify: false,useUnifiedTopology:true,useNewUrlParser:true}).then(()=>{
     console.log("DataBase connected");
 })
 var urlencodedParser = bodyParser.urlencoded({extended:false});
